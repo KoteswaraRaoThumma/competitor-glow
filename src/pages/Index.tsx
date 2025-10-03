@@ -1,12 +1,35 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useState } from "react";
+import Header from "@/components/Header";
+import CompetitorSetup from "@/components/CompetitorSetup";
+import Dashboard from "@/components/Dashboard";
+
+interface Competitor {
+  id: string;
+  name: string;
+  website: string;
+  linkedin?: string;
+  twitter?: string;
+}
 
 const Index = () => {
+  const [competitors, setCompetitors] = useState<Competitor[]>([]);
+  const [isSetupComplete, setIsSetupComplete] = useState(false);
+
+  const handleSetupComplete = (newCompetitors: Competitor[]) => {
+    setCompetitors(newCompetitors);
+    setIsSetupComplete(true);
+  };
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
+    <div className="min-h-screen bg-background">
+      <Header />
+      <main className="container mx-auto px-4 py-12 max-w-7xl">
+        {!isSetupComplete ? (
+          <CompetitorSetup onSetupComplete={handleSetupComplete} />
+        ) : (
+          <Dashboard competitors={competitors} />
+        )}
+      </main>
     </div>
   );
 };
